@@ -41,7 +41,7 @@ You can also manually paste the proxy link into Telegram's "Data and Storage" se
 
 If you find this useful, consider giving the repo a ⭐️  
 
-- [English](README_EN.md)
+- [English](README.md)
 - [中文](README_CN.md)
 - [Русский](README_RU.md)
 - [فارسی](README_FA.md)
