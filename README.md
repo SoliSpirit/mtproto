@@ -8,6 +8,15 @@ This repository provides an always-up-to-date list of free MTProto proxies that 
 
 ---
 
+## 🌐 Website
+
+Browse and test proxies interactively — the site automatically finds the best proxy for you:  
+**[https://solispirit.github.io/mtproto/](https://solispirit.github.io/mtproto/)**
+
+Available in English, Arabic, Russian, Chinese, and Persian.
+
+---
+
 ## 📄 What's Inside?
 
 - A simple text file: `all_proxies.txt`
@@ -15,8 +24,9 @@ This repository provides an always-up-to-date list of free MTProto proxies that 
 - No clutter, no ads – just clean proxy addresses ready to use
 
 Example line:
+```
 tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000000000
-
+```
 
 ---
 
@@ -42,6 +52,7 @@ You can also manually paste the proxy link into Telegram's "Data and Storage" se
 If you find this useful, consider giving the repo a ⭐️  
 
 - [English](README.md)
+- [العربية](README_AR.md)
 - [中文](README_CN.md)
 - [Русский](README_RU.md)
 - [فارسی](README_FA.md)
