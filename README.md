@@ -8,15 +8,6 @@ This repository provides an always-up-to-date list of free MTProto proxies that 
 
 ---
 
-## 🌐 Website
-
-Browse and test proxies interactively — the site automatically finds the best proxy for you:  
-**[https://solispirit.github.io/mtproto/](https://solispirit.github.io/mtproto/)**
-
-Available in English, Arabic, Russian, Chinese, and Persian.
-
----
-
 ## 📄 What's Inside?
 
 - A simple text file: `all_proxies.txt`

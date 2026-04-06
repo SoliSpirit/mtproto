@@ -8,15 +8,6 @@
 
 ---
 
-## 🌐 网站
-
-通过我们的网站浏览并测试代理，自动为你找到最佳代理：  
-**[https://solispirit.github.io/mtproto/](https://solispirit.github.io/mtproto/)**
-
-支持英语、阿拉伯语、俄语、中文和波斯语。
-
----
-
 ## 📄 内容简介
 
 - 一个简单的文本文件：`all_proxies.txt`  
