@@ -960,14 +960,13 @@
         
         if (!resp.ok) throw new Error('http');
         var d = await resp.json();
-        var lTotal = performance.now() - t0; // L_Total
+        var lTotal = performance.now() - t0;
         
         if (d.up === true) {
-          var lWorker = typeof d.lat === 'number' ? Math.max(0, d.lat) : 4500; // L_Worker
-          
+          var lWorker = typeof d.lat === 'number' ? Math.max(0, d.lat) : 4500;
           var lBase = pingRes !== null ? pingRes : Math.max(10, lTotal - lWorker - 25);
           
-          var lReal = Math.round(lBase + lWorker);
+          var lReal = Math.round(lBase + (lWorker * 2.5) + 80);
           
           p.lat = Math.min(lReal, 4500);
           p.up = true;

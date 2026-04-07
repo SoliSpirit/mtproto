@@ -23,7 +23,6 @@ export async function onRequest(context) {
     return new Response(JSON.stringify({ pong: true }), { headers: hdrs });
   }
 
-  // 3. Proxy TCP Probe
   const server = (url.searchParams.get('server') || '').replace(/\.+$/, '').trim();
   const port = parseInt(url.searchParams.get('port') || '0', 10);
 
@@ -31,26 +30,31 @@ export async function onRequest(context) {
     return new Response(JSON.stringify({ up: false, lat: 0 }), { headers: hdrs });
   }
 
-  const TIMEOUT = 4500;
+  const TIMEOUT = 4000;
   const t0 = Date.now();
   let sock = null;
 
   try {
     sock = connect({ hostname: server, port }, { secureTransport: 'off' });
     const writer = sock.writable.getWriter();
+    
+    // الانتظار حتى يتم فتح اتصال TCP بنجاح
+    await writer.ready;
+    const tcpLat = Date.now() - t0; // زمن الوصول الأولي
 
-    await Promise.race([
-      writer.ready,
-      new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), TIMEOUT))
-    ]);
+    // إرسال حمولة وهمية (Fake Payload) لإجبار البروكسي على كشف حالته
+    // البروكسي الوهمي أو الميت لن يستطيع التعامل مع هذه البيانات
+    const payload = new TextEncoder().encode("GET / HTTP/1.1\r\nHost: " + server + "\r\n\r\n");
+    await writer.write(payload);
 
-    const lat = Date.now() - t0; // L_Worker
+    // ننتظر قليلاً للتأكد من أن السيرفر لم يقطع الاتصال فوراً (RST)
+    await new Promise(res => setTimeout(res, 50));
     writer.releaseLock();
 
-    return new Response(JSON.stringify({ up: true, lat }), { headers: hdrs });
+    return new Response(JSON.stringify({ up: true, lat: tcpLat }), { headers: hdrs });
   } catch (e) {
-    const lat = Date.now() - t0;
-    return new Response(JSON.stringify({ up: false, lat }), { headers: hdrs });
+    // إذا فشل الاتصال أو رفض السيرفر الحمولة، فهو بروكسي لا يعمل
+    return new Response(JSON.stringify({ up: false, lat: 4500 }), { headers: hdrs });
   } finally {
     if (sock) sock.close().catch(() => {});
   }
