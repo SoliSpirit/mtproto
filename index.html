@@ -391,7 +391,7 @@
     }
     
     @keyframes blink {
-
+      
       0%,
       100% {
         opacity: 1
@@ -514,7 +514,7 @@
     }
     
     @media(max-width:700px) {
-
+      
       .list-head,
       .p-item {
         grid-template-columns: 20px 1fr 60px 80px 118px
@@ -532,11 +532,10 @@
       
       .list-head,
       .p-item {
-        grid-template-columns: 20px 1fr 55px 108px
+        grid-template-columns: 20px 1fr 45px 55px 108px
       }
       
-      .col-t,
-      .col-l {
+      .col-t {
         display: none
       }
       
@@ -551,6 +550,14 @@
       
       .edge-tag {
         display: none !important
+      }
+      
+      .prt {
+        font-size: 10px;
+      }
+      
+      .lat {
+        font-size: 10px;
       }
     }
   </style>
@@ -939,41 +946,41 @@
       if (lc) lc.innerHTML = latHtml(p);
     }
     
-   async function checkOne(p){
-  var url = '/check?server=' + encodeURIComponent(p.server) + '&port=' + p.port;
-  try {
-    var t0 = performance.now();
-    
-    var [pingRes, resp] = await Promise.all([
-      fetch('/check?ping=1', {cache: 'no-store'})
-        .then(function(){ return performance.now() - t0; })
-        .catch(function(){ return null; }),
-      fetch(url, {cache: 'no-store'})
-    ]);
-    
-    if (!resp.ok) throw new Error('http');
-    var d = await resp.json();
-    var lTotal = performance.now() - t0; // L_Total
-    
-    if (d.up === true) {
-      var lWorker = typeof d.lat === 'number' ? Math.max(0, d.lat) : 4500; // L_Worker
-      
-      var lBase = pingRes !== null ? pingRes : Math.max(10, lTotal - lWorker - 25);
-      
-      var lReal = Math.round(lBase + lWorker);
-      
-      p.lat = Math.min(lReal, 4500);
-      p.up = true;
-    } else {
-      p.lat = 4500;
-      p.up = false;
+    async function checkOne(p) {
+      var url = '/check?server=' + encodeURIComponent(p.server) + '&port=' + p.port;
+      try {
+        var t0 = performance.now();
+        
+        var [pingRes, resp] = await Promise.all([
+          fetch('/check?ping=1', { cache: 'no-store' })
+          .then(function() { return performance.now() - t0; })
+          .catch(function() { return null; }),
+          fetch(url, { cache: 'no-store' })
+        ]);
+        
+        if (!resp.ok) throw new Error('http');
+        var d = await resp.json();
+        var lTotal = performance.now() - t0; // L_Total
+        
+        if (d.up === true) {
+          var lWorker = typeof d.lat === 'number' ? Math.max(0, d.lat) : 4500; // L_Worker
+          
+          var lBase = pingRes !== null ? pingRes : Math.max(10, lTotal - lWorker - 25);
+          
+          var lReal = Math.round(lBase + lWorker);
+          
+          p.lat = Math.min(lReal, 4500);
+          p.up = true;
+        } else {
+          p.lat = 4500;
+          p.up = false;
+        }
+      } catch (e) {
+        p.lat = 4500;
+        p.up = false;
+      }
+      p.chk = false;
     }
-  } catch(e) {
-    p.lat = 4500;
-    p.up = false;
-  }
-  p.chk = false;
-}
     
     async function runCheck() {
       if (busy || !cfReady) return;
@@ -982,9 +989,11 @@
       var btn = document.getElementById('run-btn');
       btn.disabled = true;
       btn.textContent = l.checking;
-      data.forEach(function(p) { p.lat = null;
+      data.forEach(function(p) {
+        p.lat = null;
         p.up = null;
-        p.chk = false; });
+        p.chk = false;
+      });
       bestProxy = null;
       document.getElementById('best-wrap').classList.remove('show');
       document.getElementById('n-online').textContent = '\u2014';
@@ -1001,8 +1010,10 @@
       var BATCH = 8;
       for (var i = 0; i < total; i += BATCH) {
         var slice = data.slice(i, Math.min(i + BATCH, total));
-        slice.forEach(function(p) { p.chk = true;
-          updateRow(p); });
+        slice.forEach(function(p) {
+          p.chk = true;
+          updateRow(p);
+        });
         await Promise.all(slice.map(function(p) {
           return checkOne(p).then(function() {
             done++;
