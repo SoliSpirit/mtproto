@@ -946,40 +946,67 @@
       if (lc) lc.innerHTML = latHtml(p);
     }
     
-    async function checkOne(p) {
-      var url = '/check?server=' + encodeURIComponent(p.server) + '&port=' + p.port;
-      try {
-        var t0 = performance.now();
-        
-        var [pingRes, resp] = await Promise.all([
-          fetch('/check?ping=1', { cache: 'no-store' })
-          .then(function() { return performance.now() - t0; })
-          .catch(function() { return null; }),
-          fetch(url, { cache: 'no-store' })
-        ]);
-        
-        if (!resp.ok) throw new Error('http');
-        var d = await resp.json();
-        var lTotal = performance.now() - t0;
-        
-        if (d.up === true) {
-          var lWorker = typeof d.lat === 'number' ? Math.max(0, d.lat) : 4500;
-          var lBase = pingRes !== null ? pingRes : Math.max(10, lTotal - lWorker - 25);
-          
-          var lReal = Math.round(lBase + (lWorker * 2.5) + 80);
-          
-          p.lat = Math.min(lReal, 4500);
-          p.up = true;
-        } else {
-          p.lat = 4500;
-          p.up = false;
-        }
-      } catch (e) {
-        p.lat = 4500;
-        p.up = false;
-      }
-      p.chk = false;
+    // دالة جديدة لاكتشاف الحظر من مزود الإنترنت المحلي (ISP)
+function localProbe(server, port) {
+  return new Promise(function(resolve) {
+    var t0 = performance.now();
+    var controller = new AbortController();
+    
+    // إذا استغرق أكثر من 1.5 ثانية دون استجابة، فهذا يعني أن شركة الإنترنت تقوم بحجبه
+    var timeout = setTimeout(function(){
+      controller.abort();
+      resolve(2000); // 2000 يعني محظور
+    }, 1500);
+
+    fetch('http://' + server + ':' + port, { mode: 'no-cors', cache: 'no-store', signal: controller.signal })
+      .then(function() {
+        clearTimeout(timeout);
+        resolve(performance.now() - t0);
+      })
+      .catch(function(e) {
+        clearTimeout(timeout);
+        if (e.name === 'AbortError') resolve(2000);
+        // الفشل السريع يعني أن البروكسي يمكن الوصول إليه محلياً ولكنه رفض طلب الويب (وهذا ممتاز لأنه بروكسي وليس موقع)
+        else resolve(performance.now() - t0); 
+      });
+  });
+}
+
+// الدالة المعدلة بالكامل
+async function checkOne(p){
+  var url = '/check?server=' + encodeURIComponent(p.server) + '&port=' + p.port;
+  try {
+    var t0 = performance.now();
+    
+    // تشغيل 3 اختبارات في نفس الوقت: الفحص العالمي، قياس البينج، وفحص الحظر المحلي
+    var [workerRes, pingRes, localTime] = await Promise.all([
+      fetch(url, {cache: 'no-store'}).then(r => r.ok ? r.json() : {up:false}).catch(()=>({up:false})),
+      fetch('/check?ping=1', {cache: 'no-store'}).then(() => performance.now() - t0).catch(() => null),
+      localProbe(p.server, p.port)
+    ]);
+    
+    // إذا أرجع الفحص المحلي وقتاً كبيراً، فهذا يعني أن شركة الإنترنت في بلدك تحظر هذا البروكسي
+    var isBlockedLocally = localTime >= 1500;
+    
+    if (workerRes.up === true && !isBlockedLocally) {
+      var lWorker = workerRes.lat;
+      var lBase = pingRes !== null ? pingRes : 50;
+      
+      // معادلة محاكاة تيليجرام الواقعية ليكون البينج مطابقاً لما يظهر في التطبيق
+      var lReal = Math.round(lBase + (lWorker * 2.2) + 60);
+      
+      p.lat = Math.min(lReal, 4500);
+      p.up = true;
+    } else {
+      p.lat = 4500;
+      p.up = false; // يتم اعتباره غير متاح إذا كان محظوراً محلياً أو ميت عالمياً
     }
+  } catch(e) {
+    p.lat = 4500;
+    p.up = false;
+  }
+  p.chk = false;
+}
     
     async function runCheck() {
       if (busy || !cfReady) return;
