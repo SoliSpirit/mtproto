@@ -5,7 +5,6 @@ https://t.me/proxy?server=Shoting.forwarding-co.site.&port=44300&secret=eeNEgYdJ
 https://t.me/proxy?server=general.irancell-ir.cfd&port=443&secret=ee1603010200010001fc030386e24c3add626973636F7474692E79656B74616E65742E636F6D
 https://t.me/proxy?server=www.merco-karco.website&port=443&secret=ee1603010200010001fc030386e24c3add626973636F7474692E79656B74616E65742E636F6D
 https://t.me/proxy?server=Ashkoda-Best.gabrial-batistuta.shop&port=443&secret=eeNEgYdJvXrFGRMCIMJdCQRueWVrdGFuZXQuY29tZmFyYWthdi5jb212YW4ubmFqdmEuY29tAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-https://t.me/proxy?server=oneproxys.best&port=443&secret=eed68360458af63073bac1394e8c7a48da6f6e6570726f7879732e62657374
 https://t.me/proxy?server=3.hajrozbeh.onl&port=25565&secret=dd79e344818749bd7ac519130220c25d09
 https://t.me/proxy?server=65.109.255.80&port=8080&secret=ProxyQavi____ProxymelgACM4eFlnUldQOFpvTHVwZmNpaVI2ZkJFNDJMSXJxUW1yT2s4YzRCaVRaLi11cGRhdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 https://t.me/proxy?server=65.109.245.20&port=8080&secret=ProxyQavi____ProxymelgACM4eFlnUldQOFpvTHVwZmNpaVI2ZkJFNDJMSXJxUW1yT2s4YzRCaVRaLi11cGRhdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -71,9 +70,12 @@ https://t.me/proxy?server=77.72.80.86&port=443&secret=eeNEgYdJvXrFGRMCIMJdCQ
 https://t.me/proxy?server=77.72.80.25&port=9443&secret=eeNEgYdJvXrFGRMCIMJCdQ
 https://t.me/proxy?server=77.72.80.80&port=9443&secret=79e344818749bd7ac519130220c25d09
 https://t.me/proxy?server=77.72.80.77&port=9443&secret=79e344818749bd7ac519130220c25d09
-https://t.me/proxy?server=5.75.219.242&port=8443&secret=dd104462821249bd7ac519130220c25d09
-https://t.me/proxy?server=secure.nuv.su&port=443&secret=dd470cb2b8b29aeadfbdf8a2f7bee5ca3b
-https://t.me/proxy?server=mtproto.ONLINE&port=443&secret=ee139e0ee36150c1ea3bf299796586b5457777772e7674622e7275
+https://t.me/proxy?server=oneproxys.best&port=443&secret=eed68360458af63073bac1394e8c7a48da6f6e6570726f7879732e62657374
+https://t.me/proxy?server=rkn.tg&port=1337&secret=dda2d3fa639a6ddcf8d6d1c5913d001531
+https://t.me/proxy?server=217.177.75.145&port=443&secret=1b23e68aebd74373a29ac5f5523fa29c
+https://t.me/proxy?server=144.31.230.217&port=443&secret=33d73370103ea05acd9418eb9dca989e
+https://t.me/proxy?server=92.118.234.215&port=443&secret=dddb9b51b5ce9a2820ff62d348cb23f1b9
+https://t.me/proxy?server=116.203.0.182&port=8443&secret=dd104462821249bd7ac519130220c25d09
 https://t.me/proxy?server=insnapp.space&port=2053&secret=eeaac85835fb7d25b992ea0416b2ede075696e736e6170702e7370616365
 https://t.me/proxy?server=free.kimt.space&port=443&secret=ee6d308bbd1b3b1fae56e334750ecf2f606164732e78352e7275
 https://t.me/proxy?server=ger1.agera-connect.lol&port=443&secret=ee1378018235f440ce3cc21d689db275bc676572312e61676572612d636f6e6e6563742e6c6f6c
@@ -84,6 +86,7 @@ https://t.me/proxy?server=213.155.12.140&port=443&secret=7mnomdiexo4iDKF3VXMisn9
 https://t.me/proxy?server=furrow.goitrous.inefficacy.kaunas.unaided.pinoyteleseryehd.net&port=8950&secret=ee9c5c58f91ce1bb198dcc68037ea465
 https://t.me/proxy?server=165.245.215.108&port=443&secret=ee4141322ba85f4966835bfffaa24f05
 https://t.me/proxy?server=134.112.57.138&port=443&secret=dba39aa79f4e6b4366c98aa315cedb93
+https://t.me/proxy?server=2.27.4.58&port=443&secret=ee9d343635a76a38133c6d01e1c81f50cf706574726f766963682e7275
 https://t.me/proxy?server=195.254.165.249&port=25565&secret=dd79e344818749bd7ac519130220c25d09
 https://t.me/proxy?server=195.254.165.250&port=25565&secret=dd79e344818749bd7ac519130220c25d09
 https://t.me/proxy?server=195.254.165.251&port=25565&secret=dd79e344818749bd7ac519130220c25d09
