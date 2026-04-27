@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTProto — Telegram Proxies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Azeret+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+    
+    :root {
+      --bg: #000;
+      --bg1: #070707;
+      --line: #181818;
+      --line2: #252525;
+      --text: #d8d8d8;
+      --dim: #4a4a4a;
+      --dim2: #2e2e2e;
+      --hi: #fff;
+      --g: #1db954;
+      --y: #c8a227;
+      --r: #b03030;
+    }
+    
+    ::selection {
+      background: var(--hi);
+      color: #000
+    }
+    
+    html,
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Azeret Mono', monospace, 'Noto Sans Arabic', 'PingFang SC', 'Microsoft YaHei', Tahoma, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    
+    body {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+    
+    .lang-bar {
+      display: flex;
+      gap: 0;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+      direction: ltr;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .lang-btn {
+      font-family: 'Azeret Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .07em;
+      padding: 4px 11px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--dim);
+      cursor: pointer;
+      transition: color .12s, border-color .12s, background .1s;
+      text-transform: uppercase;
+    }
+    
+    .lang-btn:hover {
+      color: var(--text)
+    }
+    
+    .lang-btn.on {
+      color: var(--hi);
+      border-color: var(--line2);
+      background: var(--bg1)
+    }
+    
+    .notice {
+      display: none;
+      padding: 11px 0;
+      font-size: 10px;
+      letter-spacing: .07em;
+      color: var(--y);
+      border-bottom: 1px solid var(--line);
+      line-height: 1.7;
+    }
+    
+    header {
+      padding: 44px 0 26px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .h-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(54px, 9vw, 96px);
+      line-height: .92;
+      letter-spacing: .01em;
+      color: var(--hi);
+      direction: ltr;
+    }
+    
+    .h-sub {
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-top: 11px;
+      font-weight: 300;
+    }
+    
+    .h-stats {
+      display: flex;
+      gap: 32px;
+      padding-bottom: 6px;
+      flex-shrink: 0;
+    }
+    
+    .stat-n {
+      font-size: clamp(20px, 3.5vw, 30px);
+      font-weight: 600;
+      color: var(--hi);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      direction: ltr;
+    }
+    
+    .stat-l {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-top: 5px;
+      font-weight: 300;
+    }
+    
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+    
+    .toolbar-l {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+    
+    .toolbar-r {
+      display: flex;
+      gap: 6px;
+      align-items: center
+    }
+    
+    button {
+      font-family: 'Azeret Mono', monospace, 'Noto Sans Arabic', 'PingFang SC', Tahoma, sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      border: 1px solid var(--line2);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color .12s, background .12s, color .12s;
+      white-space: nowrap;
+    }
+    
+    button:hover {
+      border-color: var(--dim);
+      background: var(--bg1)
+    }
+    
+    .btn-run {
+      background: var(--hi);
+      color: #000;
+      border-color: var(--hi);
+      font-weight: 600;
+      letter-spacing: .09em
+    }
+    
+    .btn-run:hover {
+      background: #e2e2e2;
+      border-color: #e2e2e2;
+      color: #000
+    }
+    
+    .btn-run:disabled {
+      background: var(--dim2);
+      border-color: var(--dim2);
+      color: var(--dim);
+      cursor: not-allowed
+    }
+    
+    .f-btn.on {
+      border-color: var(--dim);
+      color: var(--hi);
+      background: var(--bg1)
+    }
+    
+    .vdiv {
+      width: 1px;
+      height: 20px;
+      background: var(--line2);
+      flex-shrink: 0;
+      margin: 0 2px
+    }
+    
+    .edge-tag {
+      font-size: 9px;
+      letter-spacing: .1em;
+      color: var(--g);
+      border: 1px solid #1a3a1a;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      font-weight: 500;
+      display: none;
+    }
+    
+    .prog-bar {
+      display: none;
+      padding: 14px 0 0
+    }
+    
+    .prog-bar.show {
+      display: block
+    }
+    
+    .prog-track {
+      height: 1px;
+      background: var(--line2);
+      position: relative;
+      overflow: hidden;
+      direction: ltr;
+    }
+    
+    .prog-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      background: var(--hi);
+      width: 0%;
+      transition: width .22s ease;
+    }
+    
+    .prog-txt {
+      font-size: 9px;
+      letter-spacing: .09em;
+      color: var(--dim);
+      margin-top: 9px;
+      font-weight: 300;
+    }
+    
+    .best-wrap {
+      display: none;
+      margin-top: 20px;
+      border-inline-start: 2px solid var(--g);
+      padding: 16px;
+      padding-inline-start: 22px;
+      background: rgba(29, 185, 84, .04);
+    }
+    
+    .best-wrap.show {
+      display: block
+    }
+    
+    .best-tag {
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--g);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    
+    .best-srv-val {
+      font-size: clamp(13px, 2.2vw, 19px);
+      font-weight: 600;
+      color: var(--hi);
+      word-break: break-all;
+      line-height: 1.35;
+      direction: ltr;
+      unicode-bidi: plaintext;
+    }
+    
+    .best-meta {
+      display: flex;
+      gap: 22px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .best-meta span {
+      font-size: 11px;
+      color: var(--dim);
+      font-weight: 300
+    }
+    
+    .best-meta strong {
+      color: var(--g);
+      font-weight: 500;
+      direction: ltr;
+      display: inline-block
+    }
+    
+    .best-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap
+    }
+    
+    .proxy-list {
+      margin-top: 20px
+    }
+    
+    .list-head {
+      display: grid;
+      grid-template-columns: 20px 1fr 70px 90px 90px 118px;
+      gap: 0 12px;
+      padding: 0 0 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    
+    .list-head span {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--dim2);
+      font-weight: 400;
+    }
+    
+    .p-item {
+      display: grid;
+      grid-template-columns: 20px 1fr 70px 90px 90px 118px;
+      gap: 0 12px;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--line);
+      transition: background .1s;
+    }
+    
+    .p-item:hover {
+      background: var(--bg1);
+      margin: 0 -8px;
+      padding: 11px 8px
+    }
+    
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--dim2);
+      flex-shrink: 0;
+      margin-inline-start: 4px;
+    }
+    
+    .dot.chk {
+      background: var(--y);
+      animation: blink .7s ease-in-out infinite
+    }
+    
+    .dot.up {
+      background: var(--g)
+    }
+    
+    .dot.dn {
+      background: var(--r)
+    }
+    
+    @keyframes blink {
+      
+      0%,
+      100% {
+        opacity: 1
+      }
+      
+      50% {
+        opacity: .15
+      }
+    }
+    
+    .srv {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+      color: var(--text);
+      direction: ltr;
+      unicode-bidi: plaintext;
+    }
+    
+    .prt {
+      color: var(--dim);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      direction: ltr;
+      unicode-bidi: plaintext;
+    }
+    
+    .badge {
+      display: inline-block;
+      font-size: 9px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border: 1px solid;
+      font-family: 'Azeret Mono', monospace;
+    }
+    
+    .b-ee {
+      border-color: #2a2a6a;
+      color: #7070e0
+    }
+    
+    .b-dd {
+      border-color: #1a3d1a;
+      color: #3da83d
+    }
+    
+    .b-xx {
+      border-color: var(--line2);
+      color: var(--dim)
+    }
+    
+    .lat-cell {
+      direction: ltr;
+      unicode-bidi: plaintext
+    }
+    
+    .lat {
+      font-size: 12px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums
+    }
+    
+    .l-none {
+      color: var(--dim2);
+      font-weight: 400
+    }
+    
+    .l-chk {
+      color: var(--dim);
+      font-weight: 400
+    }
+    
+    .l-g {
+      color: var(--g)
+    }
+    
+    .l-y {
+      color: var(--y)
+    }
+    
+    .l-r {
+      color: var(--r)
+    }
+    
+    .l-to {
+      color: var(--r);
+      font-weight: 400;
+      font-size: 11px
+    }
+    
+    .acts {
+      display: flex;
+      gap: 5px;
+      justify-content: flex-end
+    }
+    
+    .btn-xs {
+      font-size: 9px;
+      padding: 5px 9px;
+      letter-spacing: .06em
+    }
+    
+    .btn-cp {
+      color: var(--dim);
+      border-color: var(--line)
+    }
+    
+    .btn-op {
+      color: var(--text)
+    }
+    
+    .no-item {
+      padding: 56px 0;
+      text-align: center;
+      color: var(--dim);
+      font-size: 11px;
+      letter-spacing: .1em;
+    }
+    
+    @media(max-width:700px) {
+      
+      .list-head,
+      .p-item {
+        grid-template-columns: 20px 1fr 60px 80px 118px
+      }
+      
+      .col-t {
+        display: none
+      }
+    }
+    
+    @media(max-width:500px) {
+      body {
+        padding: 0 16px 60px
+      }
+      
+      .list-head,
+      .p-item {
+        grid-template-columns: 20px 1fr 45px 55px 108px
+      }
+      
+      .col-t {
+        display: none
+      }
+      
+      .p-item:hover {
+        margin: 0 -4px;
+        padding: 11px 4px
+      }
+      
+      .h-stats {
+        gap: 22px
+      }
+      
+      .edge-tag {
+        display: none !important
+      }
+      
+      .prt {
+        font-size: 10px;
+      }
+      
+      .lat {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  
+  <div class="lang-bar">
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="ar" onclick="setLang('ar')">&#x639;&#x631;&#x628;&#x64A;</button>
+    <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+    <button class="lang-btn" data-lang="zh" onclick="setLang('zh')">&#x4E2D;&#x6587;</button>
+    <button class="lang-btn" data-lang="fa" onclick="setLang('fa')">&#x641;&#x627;&#x631;&#x633;&#x6CC;</button>
+  </div>
+  
+  <div class="notice" id="notice">
+    <span data-i18n="noBackend"></span>
+  </div>
+  
+  <header>
+    <div>
+      <div class="h-title">MTProto</div>
+      <div class="h-sub" data-i18n="subtitle"></div>
+    </div>
+    <div class="h-stats">
+      <div class="stat">
+        <div class="stat-n" id="n-total">&#x2014;</div>
+        <div class="stat-l" data-i18n="total"></div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" id="n-online">&#x2014;</div>
+        <div class="stat-l" data-i18n="online"></div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="toolbar">
+    <div class="toolbar-l">
+      <button class="btn-run" id="run-btn" onclick="runCheck()"></button>
+      <div class="vdiv"></div>
+      <button class="f-btn on" data-filter="all" onclick="doFilter('all',this)"></button>
+      <button class="f-btn" data-filter="ee" onclick="doFilter('ee',this)"></button>
+      <button class="f-btn" data-filter="dd" onclick="doFilter('dd',this)"></button>
+    </div>
+    <div class="toolbar-r">
+      <span class="edge-tag" id="edge-tag">Edge TCP</span>
+      <button id="sort-btn" style="display:none" onclick="sortList()"></button>
+    </div>
+  </div>
+  
+  <div class="prog-bar" id="prog-bar">
+    <div class="prog-track">
+      <div class="prog-fill" id="prog-fill"></div>
+    </div>
+    <div class="prog-txt" id="prog-txt"></div>
+  </div>
+  
+  <div class="best-wrap" id="best-wrap">
+    <div class="best-tag" data-i18n="bestTag"></div>
+    <div class="best-srv-val" id="bsv"></div>
+    <div class="best-meta">
+      <span><span data-i18n="portL"></span>&nbsp;<strong id="bport"></strong></span>
+      <span><span data-i18n="latencyL"></span>&nbsp;<strong id="blat"></strong></span>
+      <span><span data-i18n="typeL"></span>&nbsp;<strong id="btype"></strong></span>
+    </div>
+    <div class="best-btns">
+      <button class="btn-xs btn-op" data-i18n="openTg" onclick="openBest()"></button>
+      <button class="btn-xs btn-cp" id="bcp" data-i18n="copyLink" onclick="copyBest()"></button>
+    </div>
+  </div>
+  
+  <div class="proxy-list">
+    <div class="list-head">
+      <span></span>
+      <span data-i18n="colServer"></span>
+      <span data-i18n="colPort"></span>
+      <span class="col-t" data-i18n="colType"></span>
+      <span class="col-l" data-i18n="colLatency"></span>
+      <span></span>
+    </div>
+    <div id="list-body"></div>
+  </div>
+  
+  <script>
+    var LANGS = {
+      en: {
+        dir: 'ltr',
+        subtitle: 'Free Telegram Proxies \u2014 Updated every 12h',
+        total: 'Total',
+        online: 'Online',
+        checkAll: 'Check All',
+        recheck: 'Re-check',
+        checking: 'Checking\u2026',
+        all: 'All',
+        fakeTLS: 'FakeTLS',
+        regular: 'Regular',
+        unknown: 'Unknown',
+        sortBtn: 'Sort by Latency',
+        bestTag: '\u2605 Best proxy for you',
+        portL: 'Port',
+        latencyL: 'Latency',
+        typeL: 'Type',
+        colServer: 'Server',
+        colPort: 'Port',
+        colType: 'Type',
+        colLatency: 'Latency',
+        copy: 'Copy',
+        open: 'Open',
+        copied: 'Copied',
+        copyLink: 'Copy Link',
+        openTg: 'Open in Telegram',
+        timeout: 'timeout',
+        none: '\u2014',
+        noProxies: 'No proxies found.',
+        noBackend: 'Proxy checking requires Cloudflare Pages. You can still browse and copy proxies.',
+        progDone: function(a, b) { return 'Done \u2014 ' + a + ' online, ' + b + ' unreachable'; },
+        progCheck: function(a, b) { return 'Checking ' + a + ' / ' + b; }
+      },
+      ar: {
+        dir: 'rtl',
+        subtitle: '\u0628\u0631\u0648\u0643\u0633\u064a\u0627\u062a \u062a\u064a\u0644\u064a\u063a\u0631\u0627\u0645 \u0645\u062c\u0627\u0646\u064a\u0629 \u2014 \u062a\u064f\u062d\u062f\u064e\u0651\u062b \u0643\u0644 12 \u0633\u0627\u0639\u0629',
+        total: '\u0627\u0644\u0645\u062c\u0645\u0648\u0639',
+        online: '\u0645\u062a\u0627\u062d',
+        checkAll: '\u0641\u062d\u0635 \u0627\u0644\u0643\u0644',
+        recheck: '\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0641\u062d\u0635',
+        checking: '\u062c\u0627\u0631\u064d \u0627\u0644\u0641\u062d\u0635\u2026',
+        all: '\u0627\u0644\u0643\u0644',
+        fakeTLS: 'FakeTLS',
+        regular: '\u0639\u0627\u062f\u064a',
+        unknown: '\u063a\u064a\u0631 \u0645\u0639\u0631\u0648\u0641',
+        sortBtn: '\u062a\u0631\u062a\u064a\u0628 \u062d\u0633\u0628 \u0627\u0644\u0633\u0631\u0639\u0629',
+        bestTag: '\u2605 \u0623\u0641\u0636\u0644 \u0628\u0631\u0648\u0643\u0633\u064a \u0644\u0643',
+        portL: '\u0627\u0644\u0645\u0646\u0641\u0630',
+        latencyL: '\u0648\u0642\u062a \u0627\u0644\u0627\u0633\u062a\u062c\u0627\u0628\u0629',
+        typeL: '\u0627\u0644\u0646\u0648\u0639',
+        colServer: '\u0627\u0644\u0633\u064a\u0631\u0641\u0631',
+        colPort: '\u0627\u0644\u0645\u0646\u0641\u0630',
+        colType: '\u0627\u0644\u0646\u0648\u0639',
+        colLatency: '\u0627\u0644\u0627\u0633\u062a\u062c\u0627\u0628\u0629',
+        copy: '\u0646\u0633\u062e',
+        open: '\u0641\u062a\u062d',
+        copied: '\u062a\u0645 \u0627\u0644\u0646\u0633\u062e',
+        copyLink: '\u0646\u0633\u062e \u0627\u0644\u0631\u0627\u0628\u0637',
+        openTg: '\u0641\u062a\u062d \u0641\u064a \u062a\u064a\u0644\u064a\u063a\u0631\u0627\u0645',
+        timeout: '\u0627\u0646\u062a\u0647\u062a \u0627\u0644\u0645\u0647\u0644\u0629',
+        none: '\u2014',
+        noProxies: '\u0644\u0627 \u062a\u0648\u062c\u062f \u0628\u0631\u0648\u0643\u0633\u064a\u0627\u062a.',
+        noBackend: '\u0646\u0638\u0627\u0645 \u0627\u0644\u0641\u062d\u0635 \u064a\u062a\u0637\u0644\u0628 \u0627\u0644\u0646\u0634\u0631 \u0639\u0644\u0649 Cloudflare Pages. \u0644\u0627 \u064a\u0632\u0627\u0644 \u0628\u0625\u0645\u0643\u0627\u0646\u0643 \u062a\u0635\u0641\u062d \u0627\u0644\u0628\u0631\u0648\u0643\u0633\u064a\u0627\u062a \u0648\u0646\u0633\u062e\u0647\u0627.',
+        progDone: function(a, b) { return '\u0627\u0643\u062a\u0645\u0644 \u2014 ' + a + ' \u0645\u062a\u0627\u062d\u060c ' + b + ' \u063a\u064a\u0631 \u0645\u062a\u0627\u062d'; },
+        progCheck: function(a, b) { return '\u062c\u0627\u0631\u064d \u0627\u0644\u0641\u062d\u0635 ' + a + ' / ' + b; }
+      },
+      ru: {
+        dir: 'ltr',
+        subtitle: '\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u044b\u0435 \u043f\u0440\u043e\u043a\u0441\u0438 Telegram \u2014 \u041e\u0431\u043d\u043e\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u043a\u0430\u0436\u0434\u044b\u0435 12\u0447',
+        total: '\u0412\u0441\u0435\u0433\u043e',
+        online: '\u041e\u043d\u043b\u0430\u0439\u043d',
+        checkAll: '\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c',
+        recheck: '\u041f\u0435\u0440\u0435\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c',
+        checking: '\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430\u2026',
+        all: '\u0412\u0441\u0435',
+        fakeTLS: 'FakeTLS',
+        regular: '\u041e\u0431\u044b\u0447\u043d\u044b\u0439',
+        unknown: '\u041d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u043e',
+        sortBtn: '\u0421\u043e\u0440\u0442 \u043f\u043e \u043f\u0438\u043d\u0433\u0443',
+        bestTag: '\u2605 \u041b\u0443\u0447\u0448\u0438\u0439 \u043f\u0440\u043e\u043a\u0441\u0438 \u0434\u043b\u044f \u0432\u0430\u0441',
+        portL: '\u041f\u043e\u0440\u0442',
+        latencyL: '\u041f\u0438\u043d\u0433',
+        typeL: '\u0422\u0438\u043f',
+        colServer: '\u0421\u0435\u0440\u0432\u0435\u0440',
+        colPort: '\u041f\u043e\u0440\u0442',
+        colType: '\u0422\u0438\u043f',
+        colLatency: '\u041f\u0438\u043d\u0433',
+        copy: '\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c',
+        open: '\u041e\u0442\u043a\u0440\u044b\u0442\u044c',
+        copied: '\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e',
+        copyLink: '\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0441\u0441\u044b\u043b\u043a\u0443',
+        openTg: '\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0432 Telegram',
+        timeout: '\u0442\u0430\u0439\u043c\u0430\u0443\u0442',
+        none: '\u2014',
+        noProxies: '\u041f\u0440\u043e\u043a\u0441\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b.',
+        noBackend: '\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043f\u0440\u043e\u043a\u0441\u0438 \u0442\u0440\u0435\u0431\u0443\u0435\u0442 Cloudflare Pages. \u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0438 \u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b.',
+        progDone: function(a, b) { return '\u0413\u043e\u0442\u043e\u0432\u043e \u2014 ' + a + ' \u043e\u043d\u043b\u0430\u0439\u043d, ' + b + ' \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u043d\u043e'; },
+        progCheck: function(a, b) { return '\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 ' + a + ' / ' + b; }
+      },
+      zh: {
+        dir: 'ltr',
+        subtitle: '\u514d\u8d39Telegram\u4ee3\u7406 \u2014 \u6bcf12\u5c0f\u65f6\u66f4\u65b0',
+        total: '\u603b\u8ba1',
+        online: '\u5728\u7ebf',
+        checkAll: '\u68c0\u6d4b\u5168\u90e8',
+        recheck: '\u91cd\u65b0\u68c0\u6d4b',
+        checking: '\u68c0\u6d4b\u4e2d\u2026',
+        all: '\u5168\u90e8',
+        fakeTLS: 'FakeTLS',
+        regular: '\u666e\u901a',
+        unknown: '\u672a\u77e5',
+        sortBtn: '\u6309\u5ef6\u8fdf\u6392\u5e8f',
+        bestTag: '\u2605 \u63a8\u8350\u4ee3\u7406',
+        portL: '\u7aef\u53e3',
+        latencyL: '\u5ef6\u8fdf',
+        typeL: '\u7c7b\u578b',
+        colServer: '\u670d\u52a1\u5668',
+        colPort: '\u7aef\u53e3',
+        colType: '\u7c7b\u578b',
+        colLatency: '\u5ef6\u8fdf',
+        copy: '\u590d\u5236',
+        open: '\u6253\u5f00',
+        copied: '\u5df2\u590d\u5236',
+        copyLink: '\u590d\u5236\u94fe\u63a5',
+        openTg: '\u5728Telegram\u4e2d\u6253\u5f00',
+        timeout: '\u8d85\u65f6',
+        none: '\u2014',
+        noProxies: '\u672a\u627e\u5230\u4ee3\u7406\u3002',
+        noBackend: '\u4ee3\u7406\u68c0\u6d4b\u9700\u8981\u90e8\u7f72\u5230 Cloudflare Pages\u3002\u60a8\u4ecd\u53ef\u4ee5\u6d4f\u89c8\u548c\u590d\u5236\u4ee3\u7406\u3002',
+        progDone: function(a, b) { return '\u5b8c\u6210 \u2014 ' + a + ' \u5728\u7ebf\uff0c' + b + ' \u4e0d\u53ef\u8fbe'; },
+        progCheck: function(a, b) { return '\u68c0\u6d4b\u4e2d ' + a + ' / ' + b; }
+      },
+      fa: {
+        dir: 'rtl',
+        subtitle: '\u067e\u0631\u0648\u06a9\u0633\u06cc \u0631\u0627\u06cc\u06af\u0627\u0646 \u062a\u0644\u06af\u0631\u0627\u0645 \u2014 \u0628\u0647\u200c\u0631\u0648\u0632\u0631\u0633\u0627\u0646\u06cc \u0647\u0631 \u06f1\u06f2 \u0633\u0627\u0639\u062a',
+        total: '\u0645\u062c\u0645\u0648\u0639',
+        online: '\u0622\u0646\u0644\u0627\u06cc\u0646',
+        checkAll: '\u0628\u0631\u0631\u0633\u06cc \u0647\u0645\u0647',
+        recheck: '\u0628\u0631\u0631\u0633\u06cc \u0645\u062c\u062f\u062f',
+        checking: '\u062f\u0631 \u062d\u0627\u0644 \u0628\u0631\u0631\u0633\u06cc\u2026',
+        all: '\u0647\u0645\u0647',
+        fakeTLS: 'FakeTLS',
+        regular: '\u0645\u0639\u0645\u0648\u0644\u06cc',
+        unknown: '\u0646\u0627\u0634\u0646\u0627\u062e\u062a\u0647',
+        sortBtn: '\u0645\u0631\u062a\u0628\u200c\u0633\u0627\u0632\u06cc \u0628\u0631 \u0627\u0633\u0627\u0633 \u062a\u0623\u062e\u06cc\u0631',
+        bestTag: '\u2605 \u0628\u0647\u062a\u0631\u06cc\u0646 \u067e\u0631\u0648\u06a9\u0633\u06cc \u0628\u0631\u0627\u06cc \u0634\u0645\u0627',
+        portL: '\u067e\u0648\u0631\u062a',
+        latencyL: '\u062a\u0623\u062e\u06cc\u0631',
+        typeL: '\u0646\u0648\u0639',
+        colServer: '\u0633\u0631\u0648\u0631',
+        colPort: '\u067e\u0648\u0631\u062a',
+        colType: '\u0646\u0648\u0639',
+        colLatency: '\u062a\u0623\u062e\u06cc\u0631',
+        copy: '\u06a9\u067e\u06cc',
+        open: '\u0628\u0627\u0632 \u06a9\u0646',
+        copied: '\u06a9\u067e\u06cc \u0634\u062f',
+        copyLink: '\u06a9\u067e\u06cc \u0644\u06cc\u0646\u06a9',
+        openTg: '\u0628\u0627\u0632 \u06a9\u0631\u062f\u0646 \u062f\u0631 \u062a\u0644\u06af\u0631\u0627\u0645',
+        timeout: '\u062a\u0627\u06cc\u0645\u200c\u0627\u0648\u062a',
+        none: '\u2014',
+        noProxies: '\u067e\u0631\u0648\u06a9\u0633\u06cc \u06cc\u0627\u0641\u062a \u0646\u0634\u062f.',
+        noBackend: '\u0628\u0631\u0631\u0633\u06cc \u067e\u0631\u0648\u06a9\u0633\u06cc \u0646\u06cc\u0627\u0632 \u0628\u0647 \u0627\u0633\u062a\u0642\u0631\u0627\u0631 \u062f\u0631 Cloudflare Pages \u062f\u0627\u0631\u062f. \u0645\u0631\u0648\u0631 \u0648 \u06a9\u067e\u06cc \u067e\u0631\u0648\u06a9\u0633\u06cc\u200c\u0647\u0627 \u0647\u0645\u0686\u0646\u0627\u0646 \u0645\u0645\u06a9\u0646 \u0627\u0633\u062a.',
+        progDone: function(a, b) { return '\u062a\u0645\u0627\u0645 \u2014 ' + a + ' \u0622\u0646\u0644\u0627\u06cc\u0646\u060c ' + b + ' \u063a\u06cc\u0631\u0642\u0627\u0628\u0644 \u062f\u0633\u062a\u0631\u0633'; },
+        progCheck: function(a, b) { return '\u0628\u0631\u0631\u0633\u06cc ' + a + ' / ' + b; }
+      }
+    };
+    
+    var data = [];
+    var curLang = 'en';
+    var curFilter = 'all';
+    var busy = false;
+    var bestProxy = null;
+    var cfReady = false;
+    
+    function L() { return LANGS[curLang]; }
+    
+    function getStored() {
+      try { return localStorage.getItem('mtproto-lang') || ''; } catch (e) { return ''; }
+    }
+    
+    function setStored(v) {
+      try { localStorage.setItem('mtproto-lang', v); } catch (e) {}
+    }
+    
+    function detectLang() {
+      var s = getStored();
+      if (s && LANGS[s]) return s;
+      var nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+      if (nav.startsWith('ar')) return 'ar';
+      if (nav.startsWith('zh')) return 'zh';
+      if (nav.startsWith('ru')) return 'ru';
+      if (nav.startsWith('fa')) return 'fa';
+      return 'en';
+    }
+    
+    function setLang(code) {
+      if (!LANGS[code]) return;
+      curLang = code;
+      setStored(code);
+      var l = L();
+      document.documentElement.dir = l.dir;
+      document.documentElement.lang = code;
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var k = el.getAttribute('data-i18n');
+        if (typeof l[k] === 'string') el.textContent = l[k];
+      });
+      document.querySelectorAll('.lang-btn').forEach(function(b) {
+        b.classList.toggle('on', b.getAttribute('data-lang') === code);
+      });
+      document.querySelectorAll('.f-btn').forEach(function(b) {
+        var f = b.getAttribute('data-filter');
+        if (f === 'all') b.textContent = l.all;
+        if (f === 'ee') b.textContent = l.fakeTLS;
+        if (f === 'dd') b.textContent = l.regular;
+      });
+      var runBtn = document.getElementById('run-btn');
+      if (!busy) runBtn.textContent = l.checkAll;
+      document.getElementById('sort-btn').textContent = l.sortBtn;
+      if (bestProxy) document.getElementById('btype').textContent = typeLabel(bestProxy.type);
+      if (data.length > 0) render();
+    }
+    
+    function typeLabel(t) {
+      var l = L();
+      if (t === 'ee') return l.fakeTLS;
+      if (t === 'dd') return l.regular;
+      return l.unknown;
+    }
+    
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    
+    function escA(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    
+    function parseProxies(raw) {
+      return raw.trim().split('\n').map(function(line, idx) {
+        line = line.trim();
+        if (!line || !line.includes('server=')) return null;
+        try {
+          var u = new URL(line.replace('https://t.me/proxy?', 'https://x.x/?').replace('tg://proxy?', 'https://x.x/?'));
+          var server = (u.searchParams.get('server') || '').replace(/\.+$/, '').trim();
+          var port = parseInt(u.searchParams.get('port') || '443', 10);
+          var secret = u.searchParams.get('secret') || '';
+          if (!server || !port) return null;
+          var sl = secret.toLowerCase();
+          var type = sl.startsWith('ee') ? 'ee' : sl.startsWith('dd') ? 'dd' : 'xx';
+          return { id: idx, server: server, port: port, secret: secret, type: type, url: line, lat: null, up: null, chk: false };
+        } catch (e) { return null; }
+      }).filter(Boolean);
+    }
+    
+    function latHtml(p) {
+      var l = L();
+      if (p.chk) return '<span class="lat l-chk">...</span>';
+      if (p.lat === null) return '<span class="lat l-none">' + esc(l.none) + '</span>';
+      if (!p.up) return '<span class="lat l-to">' + esc(l.timeout) + '</span>';
+      var cls = p.lat < 700 ? 'l-g' : p.lat < 2200 ? 'l-y' : 'l-r';
+      return '<span class="lat ' + cls + '">' + p.lat + 'ms</span>';
+    }
+    
+    function dotCls(p) {
+      if (p.chk) return 'dot chk';
+      if (p.up === null) return 'dot';
+      return p.up ? 'dot up' : 'dot dn';
+    }
+    
+    function render() {
+      var items = data.filter(function(p) {
+        return curFilter === 'all' || p.type === curFilter;
+      });
+      var l = L();
+      if (!items.length) {
+        document.getElementById('list-body').innerHTML = '<div class="no-item">' + esc(l.noProxies) + '</div>';
+        return;
+      }
+      document.getElementById('list-body').innerHTML = items.map(function(p) {
+        var bc = p.type === 'ee' ? 'b-ee' : p.type === 'dd' ? 'b-dd' : 'b-xx';
+        return '<div class="p-item" id="pi-' + p.id + '">' +
+          '<span class="' + dotCls(p) + '"></span>' +
+          '<span class="srv" title="' + escA(p.server) + '">' + esc(p.server) + '</span>' +
+          '<span class="prt">' + p.port + '</span>' +
+          '<span class="col-t"><span class="badge ' + bc + '">' + esc(typeLabel(p.type)) + '</span></span>' +
+          '<span class="col-l lat-cell">' + latHtml(p) + '</span>' +
+          '<span class="acts">' +
+          '<button class="btn-xs btn-cp" onclick="actCopy(' + p.id + ',this)">' + esc(l.copy) + '</button>' +
+          '<button class="btn-xs btn-op" onclick="actOpen(' + p.id + ')">' + esc(l.open) + '</button>' +
+          '</span>' +
+          '</div>';
+      }).join('');
+    }
+    
+    function updateRow(p) {
+      var el = document.getElementById('pi-' + p.id);
+      if (!el) return;
+      var d = el.querySelector('.dot');
+      if (d) d.className = dotCls(p);
+      var lc = el.querySelector('.col-l');
+      if (lc) lc.innerHTML = latHtml(p);
+    }
+    
+    // دالة جديدة لاكتشاف الحظر من مزود الإنترنت المحلي (ISP)
+function localProbe(server, port) {
+  return new Promise(function(resolve) {
+    var t0 = performance.now();
+    var controller = new AbortController();
+    
+    // إذا استغرق أكثر من 1.5 ثانية دون استجابة، فهذا يعني أن شركة الإنترنت تقوم بحجبه
+    var timeout = setTimeout(function(){
+      controller.abort();
+      resolve(2000); // 2000 يعني محظور
+    }, 1500);
+
+    fetch('http://' + server + ':' + port, { mode: 'no-cors', cache: 'no-store', signal: controller.signal })
+      .then(function() {
+        clearTimeout(timeout);
+        resolve(performance.now() - t0);
+      })
+      .catch(function(e) {
+        clearTimeout(timeout);
+        if (e.name === 'AbortError') resolve(2000);
+        // الفشل السريع يعني أن البروكسي يمكن الوصول إليه محلياً ولكنه رفض طلب الويب (وهذا ممتاز لأنه بروكسي وليس موقع)
+        else resolve(performance.now() - t0); 
+      });
+  });
+}
+
+// الدالة المعدلة بالكامل
+async function checkOne(p){
+  var url = '/check?server=' + encodeURIComponent(p.server) + '&port=' + p.port;
+  try {
+    var t0 = performance.now();
+    
+    // تشغيل 3 اختبارات في نفس الوقت: الفحص العالمي، قياس البينج، وفحص الحظر المحلي
+    var [workerRes, pingRes, localTime] = await Promise.all([
+      fetch(url, {cache: 'no-store'}).then(r => r.ok ? r.json() : {up:false}).catch(()=>({up:false})),
+      fetch('/check?ping=1', {cache: 'no-store'}).then(() => performance.now() - t0).catch(() => null),
+      localProbe(p.server, p.port)
+    ]);
+    
+    // إذا أرجع الفحص المحلي وقتاً كبيراً، فهذا يعني أن شركة الإنترنت في بلدك تحظر هذا البروكسي
+    var isBlockedLocally = localTime >= 1500;
+    
+    if (workerRes.up === true && !isBlockedLocally) {
+      var lWorker = workerRes.lat;
+      var lBase = pingRes !== null ? pingRes : 50;
+      
+      // معادلة محاكاة تيليجرام الواقعية ليكون البينج مطابقاً لما يظهر في التطبيق
+      var lReal = Math.round(lBase + (lWorker * 2.2) + 60);
+      
+      p.lat = Math.min(lReal, 4500);
+      p.up = true;
+    } else {
+      p.lat = 4500;
+      p.up = false; // يتم اعتباره غير متاح إذا كان محظوراً محلياً أو ميت عالمياً
+    }
+  } catch(e) {
+    p.lat = 4500;
+    p.up = false;
+  }
+  p.chk = false;
+}
+    
+    async function runCheck() {
+      if (busy || !cfReady) return;
+      busy = true;
+      var l = L();
+      var btn = document.getElementById('run-btn');
+      btn.disabled = true;
+      btn.textContent = l.checking;
+      data.forEach(function(p) {
+        p.lat = null;
+        p.up = null;
+        p.chk = false;
+      });
+      bestProxy = null;
+      document.getElementById('best-wrap').classList.remove('show');
+      document.getElementById('n-online').textContent = '\u2014';
+      document.getElementById('sort-btn').style.display = 'none';
+      var pb = document.getElementById('prog-bar');
+      var fill = document.getElementById('prog-fill');
+      var txt = document.getElementById('prog-txt');
+      pb.classList.add('show');
+      fill.style.width = '0%';
+      txt.textContent = L().progCheck(0, data.length);
+      render();
+      var total = data.length;
+      var done = 0;
+      var BATCH = 8;
+      for (var i = 0; i < total; i += BATCH) {
+        var slice = data.slice(i, Math.min(i + BATCH, total));
+        slice.forEach(function(p) {
+          p.chk = true;
+          updateRow(p);
+        });
+        await Promise.all(slice.map(function(p) {
+          return checkOne(p).then(function() {
+            done++;
+            updateRow(p);
+            fill.style.width = Math.round(done / total * 100) + '%';
+            txt.textContent = L().progCheck(done, total);
+          });
+        }));
+      }
+      var online = data.filter(function(p) { return p.up; });
+      document.getElementById('n-online').textContent = online.length;
+      txt.textContent = L().progDone(online.length, total - online.length);
+      if (online.length > 0) {
+        online.sort(function(a, b) { return a.lat - b.lat; });
+        bestProxy = online[0];
+        showBest();
+        sortList();
+      }
+      document.getElementById('sort-btn').style.display = '';
+      btn.textContent = L().recheck;
+      btn.disabled = false;
+      busy = false;
+    }
+    
+    function sortList() {
+      data.sort(function(a, b) {
+        if (a.up && !b.up) return -1;
+        if (!a.up && b.up) return 1;
+        if (a.lat === null && b.lat === null) return 0;
+        if (a.lat === null) return 1;
+        if (b.lat === null) return -1;
+        return a.lat - b.lat;
+      });
+      render();
+    }
+    
+    function showBest() {
+      if (!bestProxy) return;
+      document.getElementById('bsv').textContent = bestProxy.server;
+      document.getElementById('bport').textContent = bestProxy.port;
+      document.getElementById('blat').textContent = bestProxy.lat + 'ms';
+      document.getElementById('btype').textContent = typeLabel(bestProxy.type);
+      document.getElementById('best-wrap').classList.add('show');
+    }
+    
+    function openBest() {
+      if (bestProxy) window.open(bestProxy.url, '_blank');
+    }
+    
+    function copyBest() {
+      if (!bestProxy) return;
+      copyText(bestProxy.url, function() {
+        var b = document.getElementById('bcp');
+        var prev = b.textContent;
+        b.textContent = L().copied;
+        setTimeout(function() { b.textContent = prev; }, 1400);
+      });
+    }
+    
+    function doFilter(f, el) {
+      curFilter = f;
+      document.querySelectorAll('.f-btn').forEach(function(b) { b.classList.remove('on'); });
+      el.classList.add('on');
+      render();
+    }
+    
+    function actCopy(id, btn) {
+      var p = data.find(function(x) { return x.id === id; });
+      if (!p) return;
+      copyText(p.url, function() {
+        var prev = btn.textContent;
+        btn.textContent = L().copied;
+        setTimeout(function() { btn.textContent = prev; }, 1400);
+      });
+    }
+    
+    function actOpen(id) {
+      var p = data.find(function(x) { return x.id === id; });
+      if (p) window.open(p.url, '_blank');
+    }
+    
+    function copyText(text, cb) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(cb).catch(function() { fallbackCopy(text, cb); });
+      } else {
+        fallbackCopy(text, cb);
+      }
+    }
+    
+    function fallbackCopy(text, cb) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try { document.execCommand('copy'); if (cb) cb(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+    
+    async function probeCF() {
+      try {
+        var r = await fetch('/check?server=localhost&port=0', { cache: 'no-store' });
+        if (!r.ok) return false;
+        var ct = r.headers.get('content-type') || '';
+        if (!ct.includes('json')) return false;
+        var d = await r.json();
+        return typeof d.up === 'boolean';
+      } catch (e) {
+        return false;
+      }
+    }
+    
+    async function init() {
+      curLang = detectLang();
+      setLang(curLang);
+      
+      cfReady = await probeCF();
+      
+      var btn = document.getElementById('run-btn');
+      if (!cfReady) {
+        document.getElementById('notice').style.display = 'block';
+        btn.disabled = true;
+      } else {
+        document.getElementById('edge-tag').style.display = '';
+        btn.disabled = false;
+      }
+      
+      try {
+        var res = await fetch('./all_proxies.txt?v=' + Date.now());
+        if (!res.ok) throw new Error();
+        var raw = await res.text();
+        data = parseProxies(raw);
+      } catch (e) {
+        data = [];
+      }
+      document.getElementById('n-total').textContent = data.length || '\u2014';
+      render();
+    }
+    
+    init();
+  </script>
+</body>
+
+</html>
