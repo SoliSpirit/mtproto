@@ -26,13 +26,39 @@ tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000
 
 ---
 
-## 💡 چگونه از پروکسی‌های MTProto استفاده کنیم؟
+## 🛠️ چگونه پروکسی‌های موجود را با `check_proxies.sh` دوباره بررسی کنیم
 
-1. یک خط از `all_proxies.txt` را کپی کنید  
-2. آن را در گوشی یا مرورگر دسکتاپ خود باز کنید  
-3. تلگرام به‌صورت خودکار پیشنهاد اتصال با پروکسی را می‌دهد
+اسکریپت `check_proxies.sh` هر پروکسی را از `all_proxies.txt` بررسی می‌کند و فقط پروکسی‌های قابل‌دسترس را در `available_proxies.txt` ذخیره می‌کند.
 
-همچنین می‌توانید لینک پروکسی را به صورت دستی در تنظیمات "داده‌ها و ذخیره‌سازی" تلگرام زیر بخش "پروکسی" وارد کنید.
+### نحوه استفاده
+
+1. اسکریپت را قابل اجرا کنید:
+
+```bash
+chmod +x check_proxies.sh
+```
+
+2. آن را اجرا کنید:
+
+```bash
+./check_proxies.sh
+```
+
+3. پس از پایان، پروکسی‌های فعال در `available_proxies.txt` خواهند بود:
+
+```bash
+cat available_proxies.txt
+```
+
+### نمونه خروجی
+
+```text
+Available: 1.2.3.4:443
+Unavailable: 5.6.7.8:8443
+Done. Working proxies written to available_proxies.txt.
+Proxy list:
+...
+```
 
 ---
 
