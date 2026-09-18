@@ -1,42 +1,40 @@
 #!/bin/bash
 
-# Input and output file names
 INPUT="all_proxies.txt"
 OUTPUT="available_proxies.txt"
+CONCURRENCY=50
 
-# Clear the output file (or create an empty one)
-> "$OUTPUT"
-
-# Check whether the input file exists
 if [[ ! -f "$INPUT" ]]; then
     echo "Error: file $INPUT not found." >&2
     exit 1
 fi
 
-# Read the file line by line
-while IFS= read -r line; do
-    # Skip empty lines
-    [[ -z "$line" ]] && continue
+> "$OUTPUT"
 
-    # Extract the server and port parameters using sed
+check_one() {
+    local line="$1"
+    [[ -z "$line" ]] && return 0
+
+    local server port
     server=$(echo "$line" | sed -n 's/.*server=\([^&]*\).*/\1/p')
-    port=$(echo "$line" | sed -n 's/.*port=\([^&]*\).*/\1/p')
+    port=$(echo "$line"   | sed -n 's/.*port=\([^&]*\).*/\1/p')
 
-    # If both parameters could not be extracted, skip the line
     if [[ -z "$server" || -z "$port" ]]; then
         echo "Warning: failed to parse line: $line" >&2
-        continue
+        return 0
     fi
 
-    # Check host and port availability via the built-in /dev/tcp (bash only)
-    # Timeout: 5 seconds
     if timeout 5 bash -c "echo >/dev/tcp/$server/$port" 2>/dev/null; then
-        echo "Available: $server:$port"
-        echo "$line" >> "$OUTPUT"
+        echo "Available: $server:$port" >&2
+        echo "$line"
     else
-        echo "Unavailable: $server:$port"
+        echo "Unavailable: $server:$port" >&2
     fi
-done < "$INPUT"
+}
+export -f check_one
+
+xargs -a "$INPUT" -d '\n' -P "$CONCURRENCY" -I {} \
+    bash -c 'check_one "$@"' _ {} > "$OUTPUT"
 
 echo "Done. Working proxies written to $OUTPUT."
 echo "Proxy list:"
