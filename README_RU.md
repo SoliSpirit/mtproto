@@ -36,6 +36,42 @@ tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000
 
 ---
 
+## 🛠️ Как перепроверить доступные прокси с помощью `check_proxies.sh`
+
+Скрипт `check_proxies.sh` проверяет каждый прокси из `all_proxies.txt` и сохраняет только доступные в `available_proxies.txt`.
+
+### Использование
+
+1. Сделайте скрипт исполняемым:
+
+```bash
+chmod +x check_proxies.sh
+```
+
+2. Запустите его:
+
+```bash
+./check_proxies.sh
+```
+
+3. После завершения рабочие прокси будут в `available_proxies.txt`:
+
+```bash
+cat available_proxies.txt
+```
+
+### Пример вывода
+
+```text
+Available: 1.2.3.4:443
+Unavailable: 5.6.7.8:8443
+Done. Working proxies written to available_proxies.txt.
+Proxy list:
+...
+```
+
+---
+
 ## ☕ Поддержка
 
 Если вам это полезно, поставьте ⭐️ этому репозиторию  
