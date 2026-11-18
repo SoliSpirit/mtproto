@@ -15,7 +15,9 @@
 - 无广告，无杂乱，只有干净的代理地址
 
 示例行：  
+```
 tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000000000
+```
 
 ---
 
@@ -32,7 +34,7 @@ tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000
 2. 在手机或桌面浏览器打开  
 3. Telegram会自动提示连接代理
 
-你也可以手动将代理链接粘贴到Telegram“数据和存储”设置下的“代理”中。
+你也可以手动将代理链接粘贴到Telegram **"数据和存储"** 设置下的 **"代理"** 中。
 
 ---
 
@@ -40,7 +42,8 @@ tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000
 
 如果你觉得有用，请给本仓库点个⭐️  
 
-- [English](README.md) 
+- [English](README.md)
+- [العربية](README_AR.md)
 - [中文](README_CN.md)
 - [Русский](README_RU.md)
 - [فارسی](README_FA.md)
