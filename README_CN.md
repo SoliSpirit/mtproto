@@ -3,16 +3,18 @@
 寻找新鲜、可用的Telegram MTProto代理？  
 本仓库提供始终更新的免费MTProto代理列表，帮助你绕过审查，以隐私和高速连接Telegram。
 
-> **✅ 文件:** [`all_proxies.txt`](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt)  
+> **✅ 建议先试：** [已通过 Telegram 连接测试的代理](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/verified.txt)
+>
+> [完整列表](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt) · [来源频道](sources.txt)
 > **🕒 更新频率:** 每12小时自动更新
 
 ---
 
 ## 📄 内容简介
 
-- 一个简单的文本文件：`all_proxies.txt`  
-- 每行包含一个标准格式的可用MTProto代理  
-- 无广告，无杂乱，只有干净的代理地址
+- `verified.txt`：采集服务器最近通过这些代理成功连接到 Telegram 数据中心。
+- `all_proxies.txt`：最近七天的频道帖子中去重后的连接链接。已验证的排在前面，其余链接可能尚未测试。
+- `sources.txt`：采集所用的公开频道，包括 [@Forall_Proxy](https://t.me/Forall_Proxy)。
 
 示例行：  
 tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000000000
@@ -22,7 +24,7 @@ tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000
 ## 🔄 自动更新系统
 
 此代理列表由机器人每**12小时**运行脚本生成并推送。  
-脚本扫描公开代理并验证后发布。
+采集服务每四小时使用 TDLib 抽样测试代理，无需登录账号。连接结果取决于测试时的网络环境。
 
 ---
 

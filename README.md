@@ -3,16 +3,18 @@
 Looking for fresh, working Telegram MTProto proxies?  
 This repository provides an always-up-to-date list of free MTProto proxies that you can use to bypass censorship and connect to Telegram with privacy and speed.
 
-> **✅ File:** [`all_proxies.txt`](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt)  
+> **✅ Start here:** [Proxies that passed a Telegram connection test](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/verified.txt)
+>
+> [All recent candidates](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt) · [Source channels](sources.txt)
 > **🕒 Updated:** Automatically every 12 hours
 
 ---
 
 ## 📄 What's Inside?
 
-- A simple text file: `all_proxies.txt`
-- Each line contains a working MTProto proxy in standard format
-- No clutter, no ads – just clean proxy addresses ready to use
+- `verified.txt`: the subset that reached a Telegram data center from the collector during a recent TDLib test.
+- `all_proxies.txt`: distinct connection links from posts up to seven days old, with verified links first. It also includes links that have not been tested.
+- `sources.txt`: the Telegram channels used to generate the list, including [@Forall_Proxy](https://t.me/Forall_Proxy).
 
 Example line:
 tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000000000
@@ -23,7 +25,7 @@ tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000
 ## 🔄 Auto Update System
 
 This proxy list is generated and pushed by a bot every **12 hours** using a custom script.  
-The script scans for publicly available proxies and verifies them before publishing.
+Every four hours, the collector tests a sample of advertised proxies without logging in. The GitHub lists are published every 12 hours. Availability can vary by network and over time.
 
 ---
 
