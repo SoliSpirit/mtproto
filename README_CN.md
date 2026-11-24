@@ -36,6 +36,42 @@ tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000
 
 ---
 
+## 🛠️ 如何使用 `check_proxies.sh` 二次检查可用代理
+
+`check_proxies.sh` 脚本会检查 `all_proxies.txt` 中的每个代理，并仅将可访问的代理保存到 `available_proxies.txt`。
+
+### 用法
+
+1. 让脚本可执行：
+
+```bash
+chmod +x check_proxies.sh
+```
+
+2. 运行它：
+
+```bash
+./check_proxies.sh
+```
+
+3. 完成后，可用代理将位于 `available_proxies.txt` 中：
+
+```bash
+cat available_proxies.txt
+```
+
+### 输出示例
+
+```text
+Available: 1.2.3.4:443
+Unavailable: 5.6.7.8:8443
+Done. Working proxies written to available_proxies.txt.
+Proxy list:
+...
+```
+
+---
+
 ## ☕ 支持
 
 如果你觉得有用，请给本仓库点个⭐️  

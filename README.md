@@ -37,6 +37,42 @@ You can also manually paste the proxy link into Telegram's "Data and Storage" se
 
 ---
 
+## 🛠️ How to Double Check Available Proxies with `check_proxies.sh`
+
+The `check_proxies.sh` script checks every proxy from `all_proxies.txt` and saves only the reachable ones to `available_proxies.txt`.
+
+### Usage
+
+1. Make the script executable:
+
+```bash
+chmod +x check_proxies.sh
+```
+
+2. Run it:
+
+```bash
+./check_proxies.sh
+```
+
+3. After it finishes, working proxies will be in `available_proxies.txt`:
+
+```bash
+cat available_proxies.txt
+```
+
+### Example output
+
+```text
+Available: 1.2.3.4:443
+Unavailable: 5.6.7.8:8443
+Done. Working proxies written to available_proxies.txt.
+Proxy list:
+...
+```
+
+---
+
 ## ☕ Support
 
 If you find this useful, consider giving the repo a ⭐️  
