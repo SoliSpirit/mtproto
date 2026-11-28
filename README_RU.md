@@ -5,7 +5,7 @@
 
 > **✅ Начните здесь:** [Прокси, прошедшие проверку подключения к Telegram](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/verified.txt)
 >
-> [Полный список](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt) · [Каналы-источники](sources.txt)
+> [Полный список](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt)
 > **🕒 Обновление:** Автоматически каждые 12 часов
 
 ---
@@ -14,7 +14,6 @@
 
 - `verified.txt`: прокси, через которые сервер сбора недавно установил соединение с дата-центром Telegram.
 - `all_proxies.txt`: уникальные ссылки из публикаций за последние семь дней. Проверенные ссылки идут первыми; остальные могли не проверяться.
-- `sources.txt`: список каналов-источников, включая [@Forall_Proxy](https://t.me/Forall_Proxy).
 
 Пример строки:  
 tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000000000

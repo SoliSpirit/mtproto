@@ -5,7 +5,7 @@ This repository provides an always-up-to-date list of free MTProto proxies that 
 
 > **✅ Start here:** [Proxies that passed a Telegram connection test](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/verified.txt)
 >
-> [All recent candidates](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt) · [Source channels](sources.txt)
+> [All recent candidates](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt)
 > **🕒 Updated:** Automatically every 12 hours
 
 ---
@@ -14,7 +14,6 @@ This repository provides an always-up-to-date list of free MTProto proxies that 
 
 - `verified.txt`: the subset that reached a Telegram data center from the collector during a recent TDLib test.
 - `all_proxies.txt`: distinct connection links from posts up to seven days old, with verified links first. It also includes links that have not been tested.
-- `sources.txt`: the Telegram channels used to generate the list, including [@Forall_Proxy](https://t.me/Forall_Proxy).
 
 Example line:
 tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000000000

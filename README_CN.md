@@ -5,7 +5,7 @@
 
 > **✅ 建议先试：** [已通过 Telegram 连接测试的代理](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/verified.txt)
 >
-> [完整列表](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt) · [来源频道](sources.txt)
+> [完整列表](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt)
 > **🕒 更新频率:** 每12小时自动更新
 
 ---
@@ -14,7 +14,6 @@
 
 - `verified.txt`：采集服务器最近通过这些代理成功连接到 Telegram 数据中心。
 - `all_proxies.txt`：最近七天的频道帖子中去重后的连接链接。已验证的排在前面，其余链接可能尚未测试。
-- `sources.txt`：采集所用的公开频道，包括 [@Forall_Proxy](https://t.me/Forall_Proxy)。
 
 示例行：  
 tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000000000

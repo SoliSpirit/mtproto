@@ -5,7 +5,7 @@
 
 > **✅ برای اتصال از اینجا شروع کنید:** [پروکسی‌های آزمایش‌شده با تلگرام](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/verified.txt)
 >
-> [فهرست کامل](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt) · [کانال‌های منبع](sources.txt)
+> [فهرست کامل](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt)
 > **🕒 به‌روزرسانی:** به‌صورت خودکار هر 12 ساعت
 
 ---
@@ -14,7 +14,6 @@
 
 - `verified.txt`: لینک‌هایی که در یک بررسی اخیر، از سرور جمع‌آوری به مرکز دادهٔ تلگرام وصل شدند.
 - `all_proxies.txt`: لینک‌های غیرتکراری از پست‌های هفت روز اخیر. لینک‌های تأییدشده اول هستند؛ بقیه لزوماً آزمایش نشده‌اند.
-- `sources.txt`: فهرست کانال‌های منبع، از جمله [@Forall_Proxy](https://t.me/Forall_Proxy).
 
 نمونه خط:  
 tg://proxy?server=example.com&port=443&secret=ee00000000000000000000000000000000000000
